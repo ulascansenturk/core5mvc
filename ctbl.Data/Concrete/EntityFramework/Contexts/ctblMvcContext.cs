@@ -1,3 +1,4 @@
+using ctbl.Data.Concrete.EntityFramework.Mappings;
 using ctbl.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,14 @@ namespace ctbl.Data.Concrete.EntityFramework.Contexts
         {
             optionsBuilder.UseSqlServer(@"Server=localhost;Database=ctblBlog;User Id=sa;Password=yourStrong(!)Password");
         }
-        
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ArticleMap());
+            modelBuilder.ApplyConfiguration(new CategoryMap());
+            modelBuilder.ApplyConfiguration(new CommentMap());
+            modelBuilder.ApplyConfiguration(new RoleMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace ctbl.Entities.Concrete
     public class User:EntityBase,IEntity
     {
         public string FirstName{ get; set; }
+        public string LastName { get; set; }
         public string EmailAdress { get; set; }
         public byte[] PasswordHash { get; set; }
         public string  Username{ get; set; }

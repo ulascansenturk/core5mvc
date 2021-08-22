@@ -16,6 +16,7 @@ namespace ctbl.Services.Abstract
         Task<IResult> Add(CategoryAddDto categoryAddDto, string createdBy);
         Task<IResult> Update(CategoryUpdateDto categoryUpdateDto,string modifiedBy);
         Task<IResult> Delete(int categoryId);
+        Task<IResult> HardDelete(int categoryId);
            
 
 

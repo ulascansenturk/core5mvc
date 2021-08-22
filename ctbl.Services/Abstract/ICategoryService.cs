@@ -11,6 +11,8 @@ namespace ctbl.Services.Abstract
     {
         Task<IDataResult<Category>> Get(int categoryId);
         Task<IDataResult<IList<Category>>> GetAll();
+        Task<IDataResult<IList<Category>>> GetAllByNonDeleted();
+        
         Task<IResult> Add(CategoryAddDto categoryAddDto, string createdBy);
         Task<IResult> Update(CategoryUpdateDto categoryUpdateDto,string modifiedBy);
         Task<IResult> Delete(int categoryId);

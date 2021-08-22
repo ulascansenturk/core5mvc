@@ -14,7 +14,7 @@ namespace ctbl.Data.Concrete.EntityFramework.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=localhost;Database=ctblBlog;User Id=sa;Password=yourStrong(!)Password");
+            optionsBuilder.UseSqlServer(@"Server=localhost;Database=ctblBlog;User Id=sa;Password=Strong??Password123");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

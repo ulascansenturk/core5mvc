@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using ctbl.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -36,8 +38,30 @@ namespace ctbl.Data.Concrete.EntityFramework.Mappings
 
             builder.HasOne<Role>(u => u.Role).WithMany(r => r.Users).HasForeignKey(u => u.RoleId);
             builder.ToTable("Users");
-            
-            
+
+            builder.HasData(new User
+            {
+                Id = 1,
+                RoleId = 1,
+                 FirstName = "Ulas",
+                 LastName = "Senturk",
+                 Username = "ulasdev",
+                 EmailAdress = "ulascansenturk@hotmail.com",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedBy = "InitialCreate",
+                CreatedDate = DateTime.Now,
+                ModifiedBy = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                Description = "First root user",
+                Note = "Root user",
+                PasswordHash =Encoding.ASCII.GetBytes("95f44e0321ed96ba9d2961a54daab05e"),
+                Picture ="User.jpg" 
+                    
+                    
+                    
+                
+            });
         }
     }
 }

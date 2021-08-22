@@ -1,3 +1,4 @@
+using System;
 using ctbl.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,6 +24,20 @@ namespace ctbl.Data.Concrete.EntityFramework.Mappings
             builder.Property(r => r.Note).HasMaxLength(500);
 
             builder.ToTable("Roles");
+
+            builder.HasData(new Role
+            {
+                Id = 1,
+                Name = "Root",
+                Description = "Root privilige",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedBy = "InitialCreate",
+                CreatedDate = DateTime.Now,
+                ModifiedBy = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                Note = "Root User"
+            });
         }
     }
 }

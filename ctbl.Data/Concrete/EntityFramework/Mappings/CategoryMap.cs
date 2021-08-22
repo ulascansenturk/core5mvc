@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using ctbl.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,8 +25,48 @@ namespace ctbl.Data.Concrete.EntityFramework.Mappings
 
 
             builder.ToTable("Categories");
-            
-            
+            builder.HasData(new Category
+            {
+                Id = 1,
+                Name = "C#",
+                Description = "Testing the description of C# category",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedDate = DateTime.Now,
+                ModifiedBy = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                CreatedBy = "InitialCreate",
+                Note = "C# Category"
+            }, new Category
+            {
+
+                Id = 2,
+                Name = "C++",
+                Description = "Testing the description of C++ category",
+                IsActive = true,
+                IsDeleted = false,
+                CreatedDate = DateTime.Now,
+                ModifiedBy = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                CreatedBy = "InitialCreate",
+                Note = "C++ Category"
+            }, new Category
+            {
+                Id = 3,
+                IsActive = true,
+                IsDeleted = false,
+                Name = "Javascript",
+                CreatedDate = DateTime.Now,
+                Description = "Testing the description of Javascript category",
+                ModifiedBy = "InitialCreate",
+                ModifiedDate = DateTime.Now,
+                CreatedBy = "InitialCreate",
+                Note = "Javascript Category"
+            });
+
+
+
+
         }
         
     }

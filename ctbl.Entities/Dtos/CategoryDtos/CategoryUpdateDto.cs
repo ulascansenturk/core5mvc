@@ -5,6 +5,9 @@ namespace ctbl.Entities.Dtos.CategoryDtos
 {
     public class CategoryUpdateDto
     {
+        [Required]
+        public int Id { get; set; }
+        
         [DisplayName("Kategori Adi"), Required(ErrorMessage = "{0} Bos gecilemez"),
          MaxLength(70, ErrorMessage = "{0} {1 } Karakterden buyuk olamaz"),
          MinLength(3, ErrorMessage = "{0} {1} Karakterden kucuk olamaz")]

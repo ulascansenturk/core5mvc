@@ -6,7 +6,7 @@ namespace ctbl.Shared.Utilities.Results.Concrete
 {
     public class Result:IResult
     {
-        public Result(ResultStatus resultStatus)
+        public Result(ResultStatus resultStatus, string message)
         {
             ResultStatus = resultStatus;
 

@@ -1,4 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using AutoMapper;
 using ctbl.Data.Abstract;
 using ctbl.Entities.Concrete;
 using ctbl.Entities.Dtos.ArticleDtos;
@@ -6,14 +11,18 @@ using ctbl.Services.Abstract;
 using ctbl.Shared.Utilities.Results.Abstract;
 using ctbl.Shared.Utilities.Results.ComplexTypes;
 using ctbl.Shared.Utilities.Results.Concrete;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ctbl.Services.Concrete
 {
     public class ArticleManager:IArticleService
     {
-        public ArticleManager(IUnitOfWork unitOfWork)
+        
+        private readonly IMapper _mapper;
+        public ArticleManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         private readonly IUnitOfWork _unitOfWork;
@@ -105,24 +114,60 @@ namespace ctbl.Services.Concrete
             
         }
 
-        public Task<IResult> Add(ArticleAddDto articleAddDto, string createdBy)
+        public async Task<IResult> Add(ArticleAddDto articleAddDto, string createdBy)
         {
-            throw new System.NotImplementedException();
+            var article = _mapper.Map<Article>(articleAddDto);
+            article.CreatedBy = createdBy;
+            article.ModifiedBy = createdBy;
+            article.UserId = 1;
+            await _unitOfWork.Articles.AddAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new Result(ResultStatus.Success, $"{articleAddDto.Title} baslikli makale basariyla eklenmistir");
+            
+
+
         }
 
-        public Task<IResult> Update(ArticleUpdateDto articleUpdateDto, string modifiedBy)
+        public async Task<IResult> Update(ArticleUpdateDto articleUpdateDto, string modifiedBy)
         {
-            throw new System.NotImplementedException();
+            var article = _mapper.Map<Article>(articleUpdateDto);
+            article.ModifiedBy = modifiedBy;
+            await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            
+            return new Result(ResultStatus.Success, $"{articleUpdateDto.Title} baslikli makale basariyla eklenmistir");
+            
+        }
+        
+
+        public async Task<IResult> Delete(int articleId, string modifiedBy)
+        {
+            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            if (result)
+            {
+                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
+                article.IsDeleted = true;
+                article.ModifiedBy = modifiedBy;
+                article.ModifiedDate = DateTime.Now;
+                await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                
+            return new Result(ResultStatus.Success, $"{article.Title} baslikli makale basariyla silinmistir" );
+            }
+            
+            return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
         }
 
-        public Task<IResult> Delete(int articleId, string modifiedBy)
+        public async Task<IResult> HardDelete(int articleId)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IResult> HardDelete(int articleId)
-        {
-            throw new System.NotImplementedException();
+            
+            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            if (result)
+            {
+                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
+                await _unitOfWork.Articles.DeleteAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                
+            return new Result(ResultStatus.Success, $"{article.Title} baslikli makale basariyla veritabanindan silinmistir ");
+            }
+            
+            return new Result(ResultStatus.Error, "Boyle bir makale bulunamadi");
         }
     }
 }
